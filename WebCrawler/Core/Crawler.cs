@@ -60,9 +60,13 @@ namespace WebCrawler.Core
 
 						if (abs.Scheme == Uri.UriSchemeHttp || abs.Scheme == Uri.UriSchemeHttps || (abs.Scheme == Uri.UriSchemeFtp && this.IncludeFtp))
 						{
+							// Add URL if it is not added yet.
+
 							if (!context.UrlList.Contains(abs))
 							{
 								context.UrlList.Add(abs);
+
+								// Crawl this URL for nested links if possible.
 
 								if (abs.Scheme != Uri.UriSchemeFtp)
 								{
@@ -71,6 +75,25 @@ namespace WebCrawler.Core
 										await DoCrawl(abs.AbsoluteUri, context, nestingLevel - 1);
 									}
 								}
+							}
+						}
+					}
+				}
+
+				// If <img> parsing enabled search for images URLs.
+
+				if (this.IncludeImgTag)
+				{
+					foreach (var img in document.QuerySelectorAll("img").OfType<AngleSharp.Html.Dom.IHtmlImageElement>())
+					{
+						if (String.IsNullOrWhiteSpace(img.Source))
+							continue;
+
+						if (Uri.TryCreate(img.Source, UriKind.RelativeOrAbsolute, out Uri uri))
+						{
+							if (!context.UrlList.Contains(uri))
+							{
+								context.UrlList.Add(uri);
 							}
 						}
 					}

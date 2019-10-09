@@ -16,7 +16,7 @@ namespace WebCrawler
 		[Option("ftp", Default = false, HelpText = "Include FTP urls.")]
 		public bool IncludeFtp { get; set; }
 
-		[Option('i', "img", Default = false, HelpText = "Include <img src=\"...\"> url links.")]
+		[Option("img", Default = false, HelpText = "Include <img src=\"...\"> url links.")]
 		public bool Images { get; set; }
 	}
 }
