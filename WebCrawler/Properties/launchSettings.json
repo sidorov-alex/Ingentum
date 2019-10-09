@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "WebCrawler": {
+      "commandName": "Project",
+      "commandLineArgs": "http://speedtest.tele2.net/ -n 0 --ftp"
+    }
+  }
+}
