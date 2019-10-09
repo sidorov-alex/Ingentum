@@ -30,12 +30,7 @@ namespace InstructorsApp.Controllers
 		// GET: api/instructor/1
 		[HttpGet("{id:int}")]
 		public async Task<ActionResult<Instructor>> GetInstructor(int id)
-		{
-			if (id <= 0)
-			{
-				return BadRequest();
-			}
-			
+		{	
 			var instructor = await this.dbContext.Instructors.FindAsync(id);
 
 			if (instructor == null)
@@ -61,7 +56,7 @@ namespace InstructorsApp.Controllers
 		[HttpPut("{id:int}")]
 		public async Task<ActionResult> UpdateInstructor(int id, [FromBody] Instructor instructor)
 		{
-			if (id <= 0 || id != instructor.Id)
+			if (id != instructor.Id)
 			{
 				return BadRequest();
 			}
@@ -92,11 +87,6 @@ namespace InstructorsApp.Controllers
 		[HttpDelete("{id:int}")]
 		public async Task<ActionResult> DeleteInstructor(int id)
 		{
-			if (id <= 0)
-			{
-				return BadRequest();
-			}
-
 			// Пытаемся найти запись с указанным идентификатором. Используем метод Find, который может вернуть запись из памяти,
 			// не обращаясь к БД, если она уже загружена в контекст.
 

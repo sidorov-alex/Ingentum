@@ -9,8 +9,9 @@ import { InstructorService } from 'src/app/instructor.service';
 export class HomeComponent implements OnInit {
 
   private instructorList: Instructor[];
-
-  private selectedItem: Instructor | null;
+  private _selectedItem: Instructor | null = null;
+   
+  model: Instructor = new Instructor("", "", "");
 
   constructor(
     private instructorService: InstructorService) { }
@@ -20,8 +21,23 @@ export class HomeComponent implements OnInit {
       .subscribe(list => this.instructorList = list);
   }
 
+  private get selectedItem() {
+    return this._selectedItem;
+  }
+
+  private set selectedItem(item: Instructor) {
+    this._selectedItem = item;
+
+    this.onSelectedItemChanged();
+  }
+
   private onRowClick(item: Instructor) {
-    this.selectedItem = item;
+    if (this.selectedItem === item) {
+      this.selectedItem = null;
+    }
+    else {
+      this.selectedItem = item;
+    }
   }
 
   private onDeleteClick(item: Instructor) {
@@ -38,6 +54,41 @@ export class HomeComponent implements OnInit {
 
     if (this.selectedItem === item) {
       this.selectedItem = null;
+    }
+  }
+
+  private onSelectedItemChanged() {
+    if (this.selectedItem === null) {
+      this.model.id = 0;
+      this.model.firstName = "";
+      this.model.middleName = "";
+      this.model.lastName = "";
+    }
+    else {
+      this.model.id = this.selectedItem.id;
+      this.model.firstName = this.selectedItem.firstName;
+      this.model.middleName = this.selectedItem.middleName;
+      this.model.lastName = this.selectedItem.lastName;
+    }
+  }
+
+  private onSaveClick() {
+    if (this.model.id) {
+      let item = this.selectedItem;
+
+      this.instructorService.update(this.model.id, this.model)
+        .subscribe(() => {
+          item.firstName = this.model.firstName;
+          item.middleName = this.model.middleName;
+          item.lastName = this.model.lastName;
+        });
+    }
+    else {
+      this.instructorService.add(this.model)
+        .subscribe(item => {
+          this.instructorList.push(item)
+          this.selectedItem = item;
+        });
     }
   }
 }

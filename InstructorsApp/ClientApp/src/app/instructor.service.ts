@@ -12,10 +12,18 @@ export class InstructorService {
     private http: HttpClient) { }
 
   getList(): Observable<Instructor[]>{
-    return this.http.get<Instructor[]>('api/instructor');
+    return this.http.get<Instructor[]>("api/instructor");
+  }
+
+  add(item: Instructor): Observable<Instructor> {
+    return this.http.post<Instructor>("api/instructor", item);
+  }
+
+  update(id: number, item: Instructor) {
+    return this.http.put<Instructor>("api/instructor/" + id, item);
   }
 
   delete(id: number) : Observable<any> {
-    return this.http.delete('api/instructor/' + id);
+    return this.http.delete("api/instructor/" + id);
   }
 }
