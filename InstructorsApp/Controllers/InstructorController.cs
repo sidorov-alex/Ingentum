@@ -15,6 +15,9 @@ namespace InstructorsApp.Controllers
 		public InstructorController(InstructorsAppDbContext dbContext)
 		{
 			this.dbContext = dbContext;
+
+			// https://github.com/aspnet/EntityFrameworkCore/issues/11666
+			this.dbContext.Database.EnsureCreated();
 		}
 
 		// GET: api/instructor
