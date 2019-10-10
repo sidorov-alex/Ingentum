@@ -34,10 +34,13 @@ namespace WebCrawler
 
 			// Do the scan asynchronously.
 
-			var crawler = new Crawler(uri);
-			crawler.IncludeImgTag = opts.Images;
-			crawler.NestingLevel = opts.NestingLevel;
-			crawler.IncludeFtp = opts.IncludeFtp;
+			var crawler = new Crawler(uri)
+			{
+				NestingLevel = opts.NestingLevel,
+				ExcludePhrase = opts.ExcludePhrase,
+				IncludeFtp = opts.IncludeFtp,
+				IncludeImgTag = opts.Images
+			};
 
 			var list = await crawler.RunAsync();
 

@@ -16,6 +16,8 @@ namespace WebCrawler.Core
 
 		public int NestingLevel { get; set; }
 
+		public string ExcludePhrase { get; set; } = "";
+
 		public Crawler(Uri root)
 		{
 			this.root = root ?? throw new ArgumentNullException(nameof(root));
@@ -62,7 +64,7 @@ namespace WebCrawler.Core
 						{
 							// Add URL if it is not added yet.
 
-							if (!context.UrlList.Contains(abs))
+							if (!HasExcludedPhrase(abs) && !context.UrlList.Contains(abs))
 							{
 								context.UrlList.Add(abs);
 
@@ -91,7 +93,7 @@ namespace WebCrawler.Core
 
 						if (Uri.TryCreate(img.Source, UriKind.RelativeOrAbsolute, out Uri uri))
 						{
-							if (!context.UrlList.Contains(uri))
+							if (!HasExcludedPhrase(uri) && !context.UrlList.Contains(uri))
 							{
 								context.UrlList.Add(uri);
 							}
@@ -100,5 +102,7 @@ namespace WebCrawler.Core
 				}
 			}
 		}
+
+		private bool HasExcludedPhrase(Uri uri) => !String.IsNullOrWhiteSpace(this.ExcludePhrase) && uri.AbsoluteUri.Contains(this.ExcludePhrase);
 	}
 }

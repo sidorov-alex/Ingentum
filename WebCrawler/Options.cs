@@ -13,6 +13,9 @@ namespace WebCrawler
 		[Option('n', "nesting", Default = 0, HelpText = "Crawl nesting level.")]
 		public int NestingLevel { get; set; }
 
+		[Option('e', "exclude", Default = null, HelpText = "Keyword or phrase that should not be present in URL.")]
+		public string ExcludePhrase { get; set; }
+
 		[Option("ftp", Default = false, HelpText = "Include FTP urls.")]
 		public bool IncludeFtp { get; set; }
 
